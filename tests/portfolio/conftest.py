@@ -14,13 +14,10 @@ def app():
     db_fd, db_path = tempfile.mkstemp()
     # create the app with common test config
     app = create_app({"ENV": "testing"})
-
     # create the database and load test data
     with app.app_context():
         test_db()
-
     yield app
-
     # close and remove the temporary database
     os.close(db_fd)
     os.unlink(db_path)
