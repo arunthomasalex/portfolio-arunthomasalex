@@ -1,13 +1,14 @@
 from flask import current_app
-from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String
+from sqlalchemy import Column, Integer, String, create_engine
+from sqlalchemy.ext.declarative import declarative_base
 
-engine = create_engine(current_app.config["SQLALCHEMY_DATABASE_URI"])
-metadata = MetaData()
+Base = declarative_base()
+engine = create_engine(current_app.config["SQLALCHEMY_DATABASE_URI"], echo = current_app.config['SHOW_QUERY'])
 
-Message = Table("messages", metadata,
-    Column("id", Integer, primary_key = True),
-    Column("name", String(20), nullable = False),
-    Column("email", String(100), nullable = False),
-    Column("subject", String(100), nullable = False),
-    Column("message", String(500), nullable = False)
-)
+class Message(Base):
+    __tablename__ = 'messages'
+    id = Column(Integer, primary_key = True)
+    name = Column(String(20), nullable = False)
+    email = Column(String(100), nullable = False)
+    subject = Column(String(100), nullable = False)
+    message = Column(String(500), nullable = False)
