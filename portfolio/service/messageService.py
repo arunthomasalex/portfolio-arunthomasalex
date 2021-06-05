@@ -14,7 +14,7 @@ def create(data):
         return True, "Successfully inserted into database."
     except Exception:
         tb = traceback.format_exc()
-        logging.error(tb)
+        print(tb)
         return False, "Failed to insert into database."
 
 def findAll():
