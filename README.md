@@ -15,7 +15,7 @@ export FLASK_ENV=development
 cd portfolio-arunthomasalex
 pip install -r requirements.txt
 flask init-db
-flask routes
+flask routes #To get all the routes in the application
 pytest
 gunicorn app:app
 ```
