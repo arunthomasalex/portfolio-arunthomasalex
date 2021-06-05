@@ -6,7 +6,6 @@ def setup():
     from portfolio.models import Base, engine
     Base.metadata.create_all(engine)
 
-
 @click.command("init-db")
 @with_appcontext
 def init_db():
