@@ -12,9 +12,9 @@ def add():
     data["message"] = request.form["message"]
     success, message = messageService.create(data)
     if success:
-        logging.info("Successfully added the record.")
+        logging.info("Successfully saved the message.")
     else:
-        logging.info("Failed to add the record.")
+        logging.info("Failed to save the message.")
     return jsonify(message = message), 201 if success else 400 
 
 @bp.route('/', defaults={'name': None})

@@ -11,11 +11,11 @@ def create(data):
         msg = Message(name=data["name"], email=data["email"], subject=data["subject"], message=data["message"])
         session.add(msg)
         session.commit()
-        return True, "Successfully inserted into database."
+        return True, "Successfully saved the message."
     except Exception:
         tb = traceback.format_exc()
         logging.error(tb)
-        return False, "Failed to insert into database."
+        return False, "Failed to save the message."
 
 def findAll():
     datas = session.query(Message).all()
@@ -33,4 +33,4 @@ def findByName(name = None):
 def delete(id):
     session.query(Message).filter(Message.id == id).delete()
     session.commit()
-    return dict(message="Deleted the record.")
+    return dict(message="Deleted the message.")
