@@ -1,10 +1,16 @@
 from flask import Blueprint, request, jsonify
 import logging
 from portfolio.service import messageService
+from portfolio.validations import MessageSchema
 
 bp = Blueprint('message_bp', __name__, url_prefix='/message')
+message_schema = MessageSchema()
 @bp.route('/', methods=['POST'])
 def add():
+    errors = message_schema.validate(request.form)
+    if errors:
+        logging.error(errors)
+        return jsonify(message = "Invalid data."), 400 
     data = {}
     data["name"] = request.form["name"]
     data["email"] = request.form["email"]
