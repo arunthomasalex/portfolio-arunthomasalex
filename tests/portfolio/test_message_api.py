@@ -2,10 +2,10 @@ import json
 import pytest
 
 test_data = {
-    "name" : "test", 
-    "email" : "test@test.cmo", 
-    "subject" : "testsobject", 
-    "message" : "testmessage"
+    "name" : "test_name", 
+    "email" : "test_email@test.cmo", 
+    "subject" : "tests_subject", 
+    "message" : "test_message"
 }
 
 def test_post_message(client):
@@ -20,11 +20,23 @@ def test_get_all_messages(client):
     resp = client.get("/message")
     assert resp.status_code == 200
 
-def test_get_all_message_using_filter(client):
+def test_get_all_message_name_filter(client):
     resp = client.get(f"/message?name={test_data['name']}")
     assert resp.status_code == 200
     json_data = json.loads(resp.data)
     assert json_data[0]["name"] == test_data["name"]
+
+def test_get_all_message_email_filter(client):
+    resp = client.get(f"/message?email={test_data['email']}")
+    assert resp.status_code == 200
+    json_data = json.loads(resp.data)
+    assert json_data[0]["email"] == test_data["email"]
+
+def test_get_all_message_subject_filter(client):
+    resp = client.get(f"/message?subject={test_data['subject']}")
+    assert resp.status_code == 200
+    json_data = json.loads(resp.data)
+    assert json_data[0]["subject"] == test_data["subject"]
 
 def test_get_message_by_id(client):
     resp = client.get("/message/1")
