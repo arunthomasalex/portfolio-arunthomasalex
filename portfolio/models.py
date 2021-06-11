@@ -12,3 +12,10 @@ class Message(Base):
     email = Column(String(100), nullable = False)
     subject = Column(String(100), nullable = False)
     message = Column(String(500), nullable = False)
+
+    def createFilter(datas):
+        filter = []
+        for key, value in datas.items():
+            print(type(getattr(Message, key)))
+            filter.append(getattr(Message, key).like(f"%{value}%"))
+        return filter

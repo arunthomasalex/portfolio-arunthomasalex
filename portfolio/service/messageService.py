@@ -33,4 +33,9 @@ def findByName(name = None):
 def delete(id):
     session.query(Message).filter(Message.id == id).delete()
     session.commit()
-    return dict(message="Deleted the message.")
+    return "Deleted the message."
+
+def filter(params):
+    filter = [getattr(Message, key).like(f"%{value}%") for key, value in params.items()]
+    datas = session.query(Message).filter(*filter).all()
+    return [dict(id=m.id, name=m.name, email=m.email, subject=m.subject, message=m.message) for m in datas]

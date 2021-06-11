@@ -3,6 +3,7 @@ import logging
 import dbSetup
 from flask import Flask, jsonify
 from flask_cors import CORS
+from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 
 def index():
@@ -12,6 +13,7 @@ def index():
 
 def create_app(test_config = None):
     app = Flask(__name__, static_folder='static', static_url_path='/', instance_relative_config=True)
+    api = Api(app)
     if test_config is None:
         app.config.from_object(f"config.{app.config['ENV'].capitalize()}Config")
     else:
@@ -24,7 +26,10 @@ def create_app(test_config = None):
     app.cli.add_command(dbSetup.init_db) # Register cli command "flask init-db"
     logging.basicConfig(filename=f"{app.instance_path}/portfolio.log", level=logging.DEBUG, format="%(asctime)s %(name)s %(levelname)s %(threadName)s : %(message)s")
     with app.app_context():
+        from . import message_api
+        api.add_resource(message_api.Messages, "/message")
+        api.add_resource(message_api.Message, "/message/<int:id>")
+        #Test end point
         from . import routes
         app.register_blueprint(routes.bp)
-        app.add_url_rule("/", 'index', index)
     return app
