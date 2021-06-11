@@ -20,6 +20,12 @@ def test_get_all_messages(client):
     resp = client.get("/message")
     assert resp.status_code == 200
 
+def test_get_all_message_using_filter(client):
+    resp = client.get(f"/message?name={test_data['name']}")
+    assert resp.status_code == 200
+    json_data = json.loads(resp.data)
+    assert json_data[0]["name"] == test_data["name"]
+
 def test_get_message_by_id(client):
     resp = client.get("/message/1")
     assert resp.status_code == 200
